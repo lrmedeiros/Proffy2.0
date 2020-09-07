@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: 'center',
     margin: theme.spacing(2),
     padding: theme.spacing(2),
-    backgroundImage:
-      window.innerWidth <= 700
-        ? `url(${BackgroundSuccessRotate})`
-        : `url(${BackgroundSuccess})`,
+    backgroundImage: `url(${BackgroundSuccessRotate})`,
     backgroundPosition: 'center',
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
+    [theme.breakpoints.up('sm')]: {
+      backgroundImage: `url(${BackgroundSuccess})`,
+    },
   },
   textTitle: {
     font: '700 Archivo',
@@ -42,7 +42,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: 'var(--color-text-in-primary)',
   },
   containerButton: {
-    width: window.innerWidth <= 700 ? '80%' : '40%',
+    width: '80%',
+    [theme.breakpoints.up('sm')]: {
+      width: '40%',
+    },
   },
 }));
 

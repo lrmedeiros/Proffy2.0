@@ -11,8 +11,12 @@ const Home: React.FC = () => {
     history.push('/register');
   }
 
-  function handleSuccessRegister() {
+  function handleSuccess() {
     history.push('/success');
+  }
+
+  function handleLogin() {
+    history.push('/login');
   }
 
   return (
@@ -20,16 +24,12 @@ const Home: React.FC = () => {
       <Button variant="contained" color="secondary" onClick={handleRegister}>
         Ir pra register
       </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleSuccessRegister}
-      >
+      <Button variant="contained" color="secondary" onClick={handleSuccess}>
         Ir pra Success Register
       </Button>
-      {/* <Button variant="contained" color="secondary" onClick={handleRegister}>
-        Ir pra register
-      </Button> */}
+      <Button variant="contained" color="secondary" onClick={handleLogin}>
+        Ir pra Fazer Login
+      </Button>
     </>
   );
 };

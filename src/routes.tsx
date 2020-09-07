@@ -5,11 +5,13 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Register from './pages/Register';
 import Home from './pages/Home';
 import Success from './pages/Success';
+import Login from './pages/Login';
 
 const Routes: React.FC = () => {
   return (
     <BrowserRouter>
       <Route component={Home} path="/" exact />
+      <Route component={Login} path="/login" />
       <Route component={Register} path="/register" />
       <Route component={Success} path="/success" />
     </BrowserRouter>
