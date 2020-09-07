@@ -1,40 +1,62 @@
 import React from 'react';
+
 import {
-  Grid,
-  makeStyles,
-  Theme,
-  CssBaseline,
-  Paper,
   ThemeProvider,
   createMuiTheme,
+  CssBaseline,
+  responsiveFontSizes,
 } from '@material-ui/core';
 
-const theme = createMuiTheme({});
+import Routes from './routes';
 
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    height: '100vh',
+import './assets/styles/global.css';
+
+let theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#8257E5',
+      light: '#9871F5',
+      dark: '#774DD6',
+      contrastText: '#fff',
+    },
+    secondary: {
+      main: '#04D361',
+      dark: '#04BF58',
+    },
+    text: {
+      primary: '#9C98A6',
+      secondary: '#32264D',
+      disabled: '#E6E6F0',
+      hint: '#D4C2FF',
+    },
+    background: {
+      default: '#F0F0F7',
+    },
   },
-  image: {},
-}));
+  typography: {
+    fontFamily: [
+      'Poppins',
+      'Archivo',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
+});
+theme = responsiveFontSizes(theme);
 
 function App() {
-  const classes = useStyles();
-
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" className={classes.root}>
-        <Grid
-          item
-          xs={12}
-          sm={8}
-          md={5}
-          component={Paper}
-          elevation={6}
-          square
-        ></Grid>
-        <Grid item xs={false} sm={4} md={7} className={classes.image} />
-      </Grid>
+      <CssBaseline />
+      <Routes />
     </ThemeProvider>
   );
 }
