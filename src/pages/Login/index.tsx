@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect, ChangeEvent } from 'react';
+import React, { useState, FormEvent, useEffect, ChangeEvent, useRef } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   makeStyles,
@@ -24,6 +24,8 @@ import {
   VisibilityOff,
 } from '@material-ui/icons';
 
+import { ReCAPTCHA } from 'react-google-recaptcha';
+
 import api from '../../services/api';
 import purpleHeart from '../../assets/images/icons/purple-heart.svg';
 import Banner from '../../components/Banner';
@@ -32,10 +34,6 @@ import Button from '../../components/MyButton';
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     height: '100vh',
-  },
-  image: {
-    height: '50%',
-    width: '50%',
   },
   mainContent: {
     margin: theme.spacing(2, 3),
@@ -87,6 +85,8 @@ const Login: React.FC = () => {
   const [validEmail, setValidEmail] = useState(true);
   const [buttonNotReady, setButtonNotReady] = useState(true);
   const history = useHistory();
+  const grecaptchaObject = window.grecaptcha;
+  const recaptchaRef = useRef(); 
 
   if (localStorage.getItem('@token')) {
     history.push('/');
@@ -198,6 +198,7 @@ const Login: React.FC = () => {
                 value={values.password}
                 onChange={handleChanges('password')}
                 required
+                autoComplete="current-password"
                 endAdornment={
                   <InputAdornment position="end">
                     <IconButton
@@ -211,7 +212,7 @@ const Login: React.FC = () => {
                     </IconButton>
                   </InputAdornment>
                 }
-                labelWidth={65}
+                labelWidth={60}
               />
             </FormControl>
             <Grid container className={classes.spaceBetween}>
@@ -235,6 +236,11 @@ const Login: React.FC = () => {
                 Esqueceu sua senha?
               </Link>
             </Grid>
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey="Your client site key"
+              grecaptcha={grecaptchaObject}
+            />
             <Button
               disabled={buttonNotReady}
               type="submit"
