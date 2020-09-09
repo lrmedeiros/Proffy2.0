@@ -185,7 +185,6 @@ const Register: React.FC = () => {
               label="Nome"
               name="name"
               autoComplete="given-name"
-              autoFocus
               value={values.name}
               onChange={handleChanges('name')}
             />

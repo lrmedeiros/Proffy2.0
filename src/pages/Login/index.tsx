@@ -1,4 +1,4 @@
-import React, { useState, FormEvent, useEffect, ChangeEvent, useRef } from 'react';
+import React, { useState, FormEvent, useEffect, ChangeEvent } from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   makeStyles,
@@ -24,12 +24,10 @@ import {
   VisibilityOff,
 } from '@material-ui/icons';
 
-import { ReCAPTCHA } from 'react-google-recaptcha';
-
 import api from '../../services/api';
 import purpleHeart from '../../assets/images/icons/purple-heart.svg';
 import Banner from '../../components/Banner';
-import Button from '../../components/MyButton';
+import Recaptcha from '../../components/RecaptchaV3';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -85,8 +83,6 @@ const Login: React.FC = () => {
   const [validEmail, setValidEmail] = useState(true);
   const [buttonNotReady, setButtonNotReady] = useState(true);
   const history = useHistory();
-  const grecaptchaObject = window.grecaptcha;
-  const recaptchaRef = useRef(); 
 
   if (localStorage.getItem('@token')) {
     history.push('/');
@@ -99,9 +95,9 @@ const Login: React.FC = () => {
     setButtonNotReady(true);
   }, [values.email, values.password]);
 
-  async function handleSubmit(e: FormEvent) {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (handlecheckValidEmail()) {
+    if (validEmail) {
       try {
         const response = await api.post('login', {
           email: values.email,
@@ -114,7 +110,7 @@ const Login: React.FC = () => {
         alert('Não foi possivel conectar ao servidor');
       }
     }
-  }
+  };
 
   const handleChanges = (props: keyof State) => (
     event: ChangeEvent<HTMLInputElement>
@@ -133,10 +129,9 @@ const Login: React.FC = () => {
   function handlecheckValidEmail() {
     if (!values.email.includes('@')) {
       setValidEmail(false);
-      return false;
+    } else {
+      setValidEmail(true);
     }
-    setValidEmail(true);
-    return true;
   }
 
   function handleMouseDownPassword(event: FormEvent) {
@@ -182,7 +177,6 @@ const Login: React.FC = () => {
               label="E-mail"
               name="email"
               autoComplete="email"
-              autoFocus
               value={values.email}
               onChange={handleChanges('email')}
               onBlur={handlecheckValidEmail}
@@ -220,7 +214,7 @@ const Login: React.FC = () => {
                 control={
                   <Checkbox
                     icon={<CheckBoxOutlineBlank fontSize="small" />}
-                    checkedIcon={<CheckBox fontSize="large" />}
+                    checkedIcon={<CheckBox fontSize="small" />}
                     name="checked"
                     checked={values.isChecked}
                     onChange={(event) => handleCheck(event)}
@@ -236,19 +230,7 @@ const Login: React.FC = () => {
                 Esqueceu sua senha?
               </Link>
             </Grid>
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey="Your client site key"
-              grecaptcha={grecaptchaObject}
-            />
-            <Button
-              disabled={buttonNotReady}
-              type="submit"
-              variant="contained"
-              color="secondary"
-            >
-              Entrar
-            </Button>
+            <Recaptcha action="login" buttonNotReady={buttonNotReady} />
           </Grid>
           <Hidden xsDown>
             <Grid container>
